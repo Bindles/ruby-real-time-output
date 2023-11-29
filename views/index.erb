@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ruby Code Runner</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+  <h1>Ruby Code Runner</h1>
+  <textarea id="code" rows="10" cols="50"></textarea>
+  <br>
+  <div id="output"></div>
+
+  <script>
+    $(document).ready(function() {
+      var codeInput = $('#code');
+      var outputDiv = $('#output');
+
+      codeInput.on('input', function() {
+        var code = codeInput.val();
+        runCode(code);
+      });
+
+      function runCode(code) {
+        $.ajax({
+          type: 'POST',
+          url: '/run',
+          data: { code: code },
+          success: function(response) {
+            outputDiv.html('<pre>' + response.output + '</pre>');
+          },
+          error: function() {
+            outputDiv.html('<pre>Error occurred while running the code.</pre>');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
